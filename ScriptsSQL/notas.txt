@@ -1,0 +1,9 @@
+Aplicación propia pruebas
+
+
+base postgreSQL
+
+
+docker run --name pgdb -e POSTGRES_PASSWORD=euro97 -e POSTGRES_USER=euro -e POSTGRES_DB=puntoventa -v E:\Containers\pgdata:/var/lib/postgresql/ -p 5432:5432 -d postgres
+
+
