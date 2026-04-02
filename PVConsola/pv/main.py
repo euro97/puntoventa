@@ -49,7 +49,7 @@ def productos(opcion):
 
 while ciclo:
     print("\n--- POS Consola ---")
-    print("1. Consultar")
+    print("1. Consultar productos")
     print("2. Agregar producto")
     print("3. Modificar producto")
     print("4. Eliminar producto")
