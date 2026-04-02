@@ -74,4 +74,4 @@ def eliminarProducto():
         cursor.execute(f"DELETE FROM productos WHERE id = %s;",(resp,))
         dbconnect.commit()
         db.close(dbconnect)
-        print("Producto eliminado")
+        print("Producto eliminado . . .")
