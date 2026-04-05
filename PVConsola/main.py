@@ -1,61 +1,24 @@
-import Producto
-import productoDAO
+from inventario import menu_productos
+from menuVentas import menu_ventas
 
-ciclo = True
+def main():
+    while True:
+        print("\n--- POS Consola ---")
+        print("1. Inventario (Productos)")
+        print("2. Ventas")
+        print("3. Salir")
 
-def consultar():
-    productos = productoDAO.consultarProductos()
-    for i in productos:
-        print(f"{i[0]} \t {i[1]}")
-    
+        opcion = int(input("Seleccione opción: "))
 
-def agregar():
-    nombre = input("Nombre: ")
-    marca = input("Marca: ")
-    cantidad = int(input("Cantidad: "))
-    precio = float(input("Precio: "))
-    tamano = input("Tamaño: ")
-    p = Producto.Producto(nombre,precio,marca,cantidad,tamano)
-    productoDAO.agregarProducto(p)
-    return "Agregado"
+        if opcion == 1:
+            menu_productos()
+        elif opcion == 2:
+            menu_ventas()
+        elif opcion == 3:
+            print("Saliendo...")
+            break
+        else:
+            print("Opción inválida")
 
-
-def modificar():
-    productoDAO.modificarProducto()
-    
-
-def eliminar():
-    productoDAO.eliminarProducto()
-
-
-def salir():
-    global ciclo 
-    ciclo = False
-    return "Saliendo ..."
-
-
-def productos(opcion):
-    
-    switcher = {
-        1: consultar,
-        2: agregar,
-        3: modificar,
-        4: eliminar,
-        5: salir
-    }
-    
-    handler   = switcher.get(opcion, lambda: "Unknown Status")
-    return handler()
-
-while ciclo:
-    print("\n--- POS Consola ---")
-    print("1. Consultar productos")
-    print("2. Agregar producto")
-    print("3. Modificar producto")
-    print("4. Eliminar producto")
-    print("5. Salir")
-
-    opcion = int(input("Seleccione opción: "))
-    productos(opcion)
-
-
+if __name__ == "__main__":
+    main()

@@ -122,7 +122,7 @@ def modificarVenta():
         iddetalle = input("Dame el ID Detalle del producto a cambiar: \n")
         print("\nProductos disponibles:")
         for producto in pd.consultarProductos():
-            print(f"ID: {producto[0]}, Nombre: {producto[1]}\n")
+            print(f"ID: {producto[0]}, Nombre: {producto[1]}")
         nuevo_id_producto = input("Dame el nuevo ID del producto: \n")
 
         cursor.execute("""
