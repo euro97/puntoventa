@@ -18,6 +18,15 @@ def buscaProducto(producto):
     db.close(dbconnect)
     return result   
 
+def buscaIDProducto(idproducto):
+    dbconnect = db.connect()
+    cursor = dbconnect.cursor()
+    cursor.execute("SELECT * FROM Productos WHERE id = %s;", (idproducto,))
+    result = cursor.fetchall()
+    db.close(dbconnect)
+    return result  
+
+
 def agregarProducto(producto):
     dbconnect = db.connect()
     cursor = dbconnect.cursor()
