@@ -1,11 +1,9 @@
-class Personas:
-    def __init__(self, id_usuario, nombre, correo, password, rol, activo=True):
-        self.id_usuario = id_usuario
+class Usuarios:
+    def __init__(self, nombre, correo, password, rol):
         self.nombre = nombre
         self.correo = correo
         self.password = password
         self.rol = rol
-        self.activo = activo
 
     @property
     def id_usuario(self):
