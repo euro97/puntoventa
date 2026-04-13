@@ -1,9 +1,9 @@
-from dao.databseDAO import DatabaseDAO
+from dao.databseDAO import databseDAO
 
-class UsuarioDAO(DatabaseDAO):
+class UsuarioDAO(databseDAO):
 
     def consultarProductos(self):
-        self.execute("""
+        self.execute_query("""
             SELECT id_producto, nombre, descripcion, precio, stock
             FROM productos
             ORDER BY id_producto;
@@ -11,7 +11,7 @@ class UsuarioDAO(DatabaseDAO):
         return self.fetchall()
     
     def buscarProductoPorId(self, id_producto):
-        self.execute("""
+        self.execute_query("""
             SELECT id_producto, nombre, descripcion, precio, stock
             FROM productos
             WHERE id_producto = %s;
@@ -19,7 +19,7 @@ class UsuarioDAO(DatabaseDAO):
         return self.fetchone()
     
     def buscarProductoPornombre(self, nombre):
-        self.execute("""
+        self.execute_query("""
             SELECT id_producto, nombre, descripcion, precio, stock
             FROM productos
             WHERE nombre ILIKE %s;
@@ -28,13 +28,13 @@ class UsuarioDAO(DatabaseDAO):
     
     
     def agregarProducto(self, nombre, descripcion, precio, stock):
-        self.execute("""
+        self.execute_query("""
             INSERT INTO productos (nombre, descripcion, precio, stock)
             VALUES (%s, %s, %s, %s);
         """, (nombre, descripcion, precio, stock))
 
     def modificarProducto(self, id_producto, nombre, descripcion, precio, stock):
-        self.execute("""
+        self.execute_query("""
             UPDATE productos
             SET nombre = %s,
                 descripcion = %s,
@@ -44,7 +44,7 @@ class UsuarioDAO(DatabaseDAO):
         """, (nombre, descripcion, precio, stock, id_producto))
 
     def eliminarProducto(self, id_producto):
-        self.execute("""
+        self.execute_query("""
             DELETE FROM productos
             WHERE id_producto = %s;
         """, (id_producto,))

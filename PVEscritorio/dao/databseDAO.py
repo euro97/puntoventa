@@ -21,11 +21,11 @@ class databseDAO:
         else:
             self.cursor.execute(query)
     
-    def fechone(self):
+    def fetchone(self):
         return self.cursor.fetchone()
     
 
-    def fechall(self):
+    def fetchall(self):
         return self.cursor.fetchall()
     
     

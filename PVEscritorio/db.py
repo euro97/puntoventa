@@ -4,7 +4,7 @@ from jproperties import Properties
 configs = Properties()
 
 
-with open('app.properties', 'rb') as config_file:
+with open("app.properties", 'rb') as config_file:
     configs.load(config_file)
 
 

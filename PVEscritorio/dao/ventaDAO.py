@@ -1,6 +1,6 @@
-from dao.databseDAO import DatabaseDAO
+from dao.databseDAO import databseDAO
 
-class UsuarioDAO(DatabaseDAO):
+class UsuarioDAO(databseDAO):
 
     # ---------------- CREAR VENTA COMPLETA ----------------
     def crearVenta(self, cliente, metodo_pago, id_usuario, detalles):
@@ -12,7 +12,7 @@ class UsuarioDAO(DatabaseDAO):
         """
 
         # Insertar venta (total en 0 temporalmente)
-        self.execute("""
+        self.execute_query("""
             INSERT INTO ventas (total, metodo_pago, cliente, id_usuario)
             VALUES (0, %s, %s, %s)
             RETURNING id_venta;
@@ -26,7 +26,7 @@ class UsuarioDAO(DatabaseDAO):
             cantidad = d["cantidad"]
 
             # Validar stock
-            self.execute("SELECT cantidad, precio FROM productos WHERE id_producto = %s;", (id_producto,))
+            self.execute_query("SELECT cantidad, precio FROM productos WHERE id_producto = %s;", (id_producto,))
             prod = self.fetchone()
 
             if not prod:
@@ -39,20 +39,20 @@ class UsuarioDAO(DatabaseDAO):
                 raise Exception(f"Stock insuficiente para producto {id_producto}")
 
             # Insertar detalle
-            self.execute("""
+            self.execute_query("""
                 INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio_unitario)
                 VALUES (%s, %s, %s, %s);
             """, (id_venta, id_producto, cantidad, precio))
 
             # Restar inventario
-            self.execute("""
+            self.execute_query("""
                 UPDATE productos
                 SET cantidad = cantidad - %s
                 WHERE id_producto = %s;
             """, (cantidad, id_producto))
 
         # Actualizar total de venta
-        self.execute("""
+        self.execute_query("""
             UPDATE ventas
             SET total = (
                 SELECT SUM(cantidad * precio_unitario)
@@ -67,7 +67,7 @@ class UsuarioDAO(DatabaseDAO):
 
     # ---------------- CONSULTAR VENTAS (TICKET COMPLETO) ----------------
     def consultarVentas(self):
-        self.execute("""
+        self.execute_query("""
             SELECT 
                 v.id_venta,
                 dv.id_detalle,
@@ -89,7 +89,7 @@ class UsuarioDAO(DatabaseDAO):
 
     # ---------------- CONSULTAR SOLO VENTAS ----------------
     def consultarSoloVentas(self):
-        self.execute("""
+        self.execute_query("""
             SELECT id_venta, fecha, total, metodo_pago, cliente, id_usuario
             FROM ventas
             ORDER BY id_venta;
@@ -100,7 +100,7 @@ class UsuarioDAO(DatabaseDAO):
     # ---------------- ELIMINAR VENTA ----------------
     def eliminarVenta(self, id_venta):
         # Regresar stock antes de borrar
-        self.execute("""
+        self.execute_query("""
             SELECT id_producto, cantidad
             FROM detalle_venta
             WHERE id_venta = %s;
@@ -108,19 +108,19 @@ class UsuarioDAO(DatabaseDAO):
         detalles = self.fetchall()
 
         for d in detalles:
-            self.execute("""
+            self.execute_query("""
                 UPDATE productos
                 SET cantidad = cantidad + %s
                 WHERE id_producto = %s;
             """, (d[1], d[0]))
 
         # Borrar venta (borra detalle_venta por ON DELETE CASCADE)
-        self.execute("DELETE FROM ventas WHERE id_venta = %s;", (id_venta,))
+        self.execute_query("DELETE FROM ventas WHERE id_venta = %s;", (id_venta,))
 
 
     # ---------------- RECALCULAR TOTAL ----------------
     def recalcularTotal(self, id_venta):
-        self.execute("""
+        self.execute_query("""
             UPDATE ventas
             SET total = (
                 SELECT SUM(cantidad * precio_unitario)

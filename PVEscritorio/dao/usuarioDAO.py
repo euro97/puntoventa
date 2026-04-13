@@ -1,9 +1,10 @@
-from dao.databseDAO import DatabaseDAO
+from dao.databseDAO import databseDAO
 
-class UsuarioDAO(DatabaseDAO):
+
+class UsuarioDAO(databseDAO):
 
     def login(self, correo, password):
-        self.execute("""
+        self.execute_query("""
             SELECT id_usuario, nombre, rol
             FROM usuarios
             WHERE correo = %s AND password = %s AND activo = TRUE;
@@ -13,7 +14,7 @@ class UsuarioDAO(DatabaseDAO):
 
 
     def consultarUsuarios(self):
-        self.execute("""
+        self.execute_query("""
             SELECT id_usuario, nombre, correo, rol, activo
             FROM usuarios
             ORDER BY id_usuario;
@@ -22,7 +23,7 @@ class UsuarioDAO(DatabaseDAO):
 
 
     def buscarUsuarioPorId(self, id_usuario):
-        self.execute("""
+        self.execute_query("""
             SELECT id_usuario, nombre, correo, rol, activo
             FROM usuarios
             WHERE id_usuario = %s;
@@ -30,7 +31,7 @@ class UsuarioDAO(DatabaseDAO):
         return self.fetchone()
     
     def buscarUsuarioPornombre(self, nombre):
-        self.execute("""
+        self.execute_query("""
             SELECT id_usuario, nombre, correo, rol, activo
             FROM usuarios
             WHERE nombre ILIKE %s;
@@ -39,14 +40,14 @@ class UsuarioDAO(DatabaseDAO):
 
 
     def agregarUsuario(self, nombre, correo, password, rol):
-        self.execute("""
+        self.execute_query("""
             INSERT INTO usuarios (nombre, correo, password, rol, activo)
             VALUES (%s, %s, %s, %s, TRUE);
         """, (nombre, correo, password, rol))
 
 
     def modificarUsuario(self, id_usuario, nombre, correo, rol, activo):
-        self.execute("""
+        self.execute_query("""
             UPDATE usuarios
             SET nombre = %s,
                 correo = %s,
@@ -57,7 +58,7 @@ class UsuarioDAO(DatabaseDAO):
 
 
     def desactivarUsuario(self, id_usuario):
-        self.execute("""
+        self.execute_query("""
             UPDATE usuarios
             SET activo = FALSE
             WHERE id_usuario = %s;

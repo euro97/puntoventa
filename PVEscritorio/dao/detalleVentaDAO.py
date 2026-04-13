@@ -1,9 +1,9 @@
-from dao.databseDAO import DatabaseDAO
+from dao.databseDAO import databseDAO
 
-class UsuarioDAO(DatabaseDAO):
+class UsuarioDAO(databseDAO):
 
     def consultadetalleVenta(self, id_venta):
-        self.execute("""
+        self.execute_query("""
             SELECT dv.id_detalle_venta, dv.id_venta, dv.id_producto, p.nombre AS nombre_producto, dv.cantidad, dv.precio_unitario
             FROM detalle_ventas dv
             JOIN productos p ON dv.id_producto = p.id_producto
@@ -13,7 +13,7 @@ class UsuarioDAO(DatabaseDAO):
     
 
     def modificardetalleVenta(self, id_detalle_venta, id_venta, id_producto, cantidad, precio_unitario):
-        self.execute("""
+        self.execute_query("""
             UPDATE detalle_ventas
             SET id_venta = %s,
                 id_producto = %s,
@@ -23,7 +23,7 @@ class UsuarioDAO(DatabaseDAO):
         """, (id_venta, id_producto, cantidad, precio_unitario, id_detalle_venta))
     
     def eliminardetalleVenta(self, id_detalle_venta):
-        self.execute("""
+        self.execute_query("""
             DELETE FROM detalle_ventas
             WHERE id_detalle_venta = %s;
         """, (id_detalle_venta,))
