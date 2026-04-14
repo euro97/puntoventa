@@ -1,6 +1,6 @@
 from dao.databseDAO import databseDAO
 
-class UsuarioDAO(databseDAO):
+class DetalleVentaDAO(databseDAO):
 
     def consultadetalleVenta(self, id_venta):
         self.execute_query("""

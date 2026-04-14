@@ -1,6 +1,6 @@
 from dao.databseDAO import databseDAO
 
-class UsuarioDAO(databseDAO):
+class VentaDAO(databseDAO):
 
     # ---------------- CREAR VENTA COMPLETA ----------------
     def crearVenta(self, cliente, metodo_pago, id_usuario, detalles):
@@ -22,11 +22,11 @@ class UsuarioDAO(databseDAO):
 
         # Insertar detalles + actualizar inventario
         for d in detalles:
-            id_producto = d["id_producto"]
+            id_producto = d["id"]
             cantidad = d["cantidad"]
 
             # Validar stock
-            self.execute_query("SELECT cantidad, precio FROM productos WHERE id_producto = %s;", (id_producto,))
+            self.execute_query("SELECT cantidad, precio FROM productos WHERE id = %s;", (id_producto,))
             prod = self.fetchone()
 
             if not prod:
